@@ -12,7 +12,7 @@ const validateUserBody = (req, res, next) => {
     else {
         next();
     }
-}
+};
 
 const checkUniqueUsername = async (req, res, next) => {
     const { username } = req.body;
@@ -33,7 +33,7 @@ const checkUsernameExists = async (req, res, next) => {
         req.body.user = user;
         next();
     }
-}
+};
 
 module.exports = {
     validateUserBody,

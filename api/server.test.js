@@ -7,11 +7,6 @@ const user1 = {
   password: "password1"
 };
 
-const user2 = {
-  username: "user4",
-  password: "password1"
-};
-
 const badUser = {
   username: "",
   password: "password1"
