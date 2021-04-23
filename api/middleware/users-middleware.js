@@ -1,5 +1,19 @@
 const Users = require('../users/users-model');
 
+const validateUserBody = (req, res, next) => {
+    if (
+        !req.body.username
+        || req.body.username === ''
+        || !req.body.password
+        || req.body.password === ''
+        ){
+            next({message: "username and password are required", status: 400});
+    }
+    else {
+        next();
+    }
+}
+
 const checkUsernameExists = async (req, res, next) => {
     const { username } = req.body;
     const [user] = await Users.findBy({ username });
@@ -11,5 +25,6 @@ const checkUsernameExists = async (req, res, next) => {
 };
 
 module.exports = {
+    validateUserBody,
     checkUsernameExists,
 };
