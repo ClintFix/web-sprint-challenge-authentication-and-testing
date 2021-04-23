@@ -8,7 +8,7 @@ const user1 = {
 };
 
 const user2 = {
-  username: "user2",
+  username: "user4",
   password: "password1"
 };
 
@@ -44,9 +44,17 @@ describe("User Tests", () => {
     test("Requires username and password", async () => {
       let res;
       res = await request(server).post("/api/auth/register").send(badUser);
-      expect(res.body).toEqual({message: 'username and password are required'});
+      expect(res.body).toMatchObject({message: 'username and password are required'});
     });
   });
 
+  describe("[POST] /login", () => {
+    test("Checks if username valid", async () => {
+      let res;
+      res = await request(server).post("/api/auth/login").send(user1);
+      console.log("res.body: ", res.body);
+      expect(res.body).toMatchObject({message: 'invalid credentials'});
+    });
+  });
 });
 
