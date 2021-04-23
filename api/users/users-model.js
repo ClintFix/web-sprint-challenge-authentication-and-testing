@@ -1,5 +1,10 @@
 const db = require('../../data/dbConfig');
 
+function findBy(filter) {
+    return db("users as u")
+        .where(filter);
+}
+
 function findById(id) {
     return db("users as u")
         .where('u.id', id)
@@ -12,6 +17,7 @@ async function add(user) {
 }
 
 module.exports = {
+    findBy,
     findById,
     add
 };
