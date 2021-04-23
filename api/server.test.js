@@ -52,9 +52,32 @@ describe("User Tests", () => {
     test("Checks if username valid", async () => {
       let res;
       res = await request(server).post("/api/auth/login").send(user1);
-      console.log("res.body: ", res.body);
       expect(res.body).toMatchObject({message: 'invalid credentials'});
     });
+    test("Checks successful login", async () => {
+      await request(server).post("/api/auth/register").send(user1);
+      let res;
+      res = await request(server).post("/api/auth/login").send(user1);
+      expect(res.body.message).toEqual(`welcome, ${user1.username}`);
+      expect(res.body.token).toBeTruthy();
+    });
+  });
+});
+
+describe("Jokes - [GET] only works with authorization", () => {
+  test("[GET] /api/jokes - Fails without token", async () => {
+    let res;
+    res = await request(server).get('/api/jokes');
+    expect(res.body).toMatchObject({message: "token required"});
+  });
+  test("[GET] /api/jokes - Success with token", async () => {
+    await request(server).post("/api/auth/register").send(user1);
+    let loggedInUser;
+    loggedInUser = await request(server).post("/api/auth/login").send(user1);
+    let res;
+    res = await request(server).get('/api/jokes').set({Authorization: loggedInUser.body.token});
+    console.log("res", res.body);
+    expect(res.body).toHaveLength(3); //Three jokes
   });
 });
 
